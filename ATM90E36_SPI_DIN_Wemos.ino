@@ -11,7 +11,7 @@
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include <SPI.h>
-#include <ATM90E36.h>
+#include <ATM90E36.h>     //SPI Metering Chip - https://github.com/whatnick/ATM90E36_Arduino
 #include <U8g2lib.h>      //OLED Driver
 #include <Wire.h>
 
@@ -52,14 +52,17 @@ void loop() {
   }
   if ((curMillis - prevMillis) > 1000)
   {
-    readMeterDisplay();
+    readMeterCurrentDisplay();
+    delay(500);
+    readMeterVoltageDisplay();
+    delay(500);
   }
 }
 
-void readMeterDisplay()
+void readMeterVoltageDisplay()
 {
-  double voltageA1,voltageB1,voltageC1,currentA1,currentB1,currentC1;
-  double voltageA2,voltageB2,voltageC2,currentA2,currentB2,currentC2;
+  double voltageA1,voltageB1,voltageC1;
+  double voltageA2,voltageB2,voltageC2;
   const double scale = 0.5149;
   voltageA1=eic1.GetLineVoltageA()*scale;
   voltageB1=eic1.GetLineVoltageB()*scale;
@@ -92,4 +95,41 @@ void readMeterDisplay()
 
   } while ( u8g2.nextPage() );
   prevMillis = curMillis;
+}
+
+void readMeterCurrentDisplay()
+{
+  double currentA1,currentB1,currentC1;
+  double currentA2,currentB2,currentC2;
+  const double scale = 0.5149;
+  currentA1=eic1.GetLineCurrentA();
+  currentB1=eic1.GetLineCurrentB();
+  currentC1=eic1.GetLineCurrentC();
+
+  currentA2=eic2.GetLineCurrentA();
+  currentB2=eic2.GetLineCurrentB();
+  currentC2=eic2.GetLineCurrentC();
+
+  u8g2.clearDisplay();
+  u8g2.firstPage();
+  do {
+    u8g2.drawStr(0, 9, "IA:");
+    u8g2.setCursor(14, 9);
+    u8g2.print(currentA1, 2);
+    u8g2.setCursor(40, 9);
+    u8g2.print(currentA2, 2);
+
+    u8g2.drawStr(0, 18, "IB:");
+    u8g2.setCursor(14, 18);
+    u8g2.print(currentB1, 2);
+    u8g2.setCursor(40, 18);
+    u8g2.print(currentB2, 2);
+
+    u8g2.drawStr(0, 27, "IC:");
+    u8g2.setCursor(14, 27);
+    u8g2.print(currentC1, 2);
+    u8g2.setCursor(40, 27);
+    u8g2.print(currentC2, 2);
+
+  } while ( u8g2.nextPage() );
 }
