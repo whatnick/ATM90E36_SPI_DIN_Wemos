@@ -101,14 +101,14 @@ void readMeterCurrentDisplay()
 {
   double currentA1,currentB1,currentC1;
   double currentA2,currentB2,currentC2;
-  const double scale = 0.5149;
-  currentA1=eic1.GetLineCurrentA();
-  currentB1=eic1.GetLineCurrentB();
-  currentC1=eic1.GetLineCurrentC();
+  const double scale = 2.5;
+  currentA1=eic1.GetLineCurrentA()*scale;
+  currentB1=eic1.GetLineCurrentB()*scale;
+  currentC1=eic1.GetLineCurrentC()*scale;
 
-  currentA2=eic2.GetLineCurrentA();
-  currentB2=eic2.GetLineCurrentB();
-  currentC2=eic2.GetLineCurrentC();
+  currentA2=eic2.GetLineCurrentA()*scale;
+  currentB2=eic2.GetLineCurrentB()*scale;
+  currentC2=eic2.GetLineCurrentC()*scale;
 
   u8g2.clearDisplay();
   u8g2.firstPage();
