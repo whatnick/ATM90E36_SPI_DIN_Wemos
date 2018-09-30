@@ -19,6 +19,19 @@
 U8G2_SSD1306_64X48_ER_F_HW_I2C u8g2(U8G2_R0); // EastRising 0.66" OLED breakout board, Uno: A4=SDA, A5=SCL, 5V powered
 long curMillis, prevMillis;
 
+//Pin rename map for MHT-ESP32
+#if defined(ESP32)
+#define D1  22
+#define D2  21
+#define D3  17
+#define D4  16
+#define D0  26
+#define D5  18
+#define D6  19
+#define D7  23
+#define D8  5
+#endif
+
 ATM90E36 eic1(D3);
 ATM90E36 eic2(D8);
 
