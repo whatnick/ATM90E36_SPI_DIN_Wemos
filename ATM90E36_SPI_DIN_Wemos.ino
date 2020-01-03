@@ -19,17 +19,21 @@
 U8G2_SSD1306_64X48_ER_F_HW_I2C u8g2(U8G2_R0); // EastRising 0.66" OLED breakout board, Uno: A4=SDA, A5=SCL, 5V powered
 long curMillis, prevMillis;
 
-// Compile for Wemos Mini, Pro and Lite
-#ifdef ESP8266
-  ATM90E36 eic1(D3);
-  ATM90E36 eic2(D8);
+//Pin rename map for MHT-ESP32
+#if defined(ESP32)
+#define D1  22
+#define D2  21
+#define D3  17
+#define D4  16
+#define D0  26
+#define D5  18
+#define D6  19
+#define D7  23
+#define D8  5
 #endif
 
-// Compile for ESP32 MHET Minikit
-#ifdef ESP32
-  ATM90E36 eic1(17);
-  ATM90E36 eic2(5);
-#endif
+ATM90E36 eic1(D3);
+ATM90E36 eic2(D8);
 
 void setup() {
   /* Initialize the serial port to host */
@@ -110,14 +114,14 @@ void readMeterCurrentDisplay()
 {
   double currentA1,currentB1,currentC1;
   double currentA2,currentB2,currentC2;
-  const double scale = 0.5149;
-  currentA1=eic1.GetLineCurrentA();
-  currentB1=eic1.GetLineCurrentB();
-  currentC1=eic1.GetLineCurrentC();
+  const double scale = 2.5;
+  currentA1=eic1.GetLineCurrentA()*scale;
+  currentB1=eic1.GetLineCurrentB()*scale;
+  currentC1=eic1.GetLineCurrentC()*scale;
 
-  currentA2=eic2.GetLineCurrentA();
-  currentB2=eic2.GetLineCurrentB();
-  currentC2=eic2.GetLineCurrentC();
+  currentA2=eic2.GetLineCurrentA()*scale;
+  currentB2=eic2.GetLineCurrentB()*scale;
+  currentC2=eic2.GetLineCurrentC()*scale;
 
   u8g2.clearDisplay();
   u8g2.firstPage();
