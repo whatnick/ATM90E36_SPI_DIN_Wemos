@@ -19,8 +19,17 @@
 U8G2_SSD1306_64X48_ER_F_HW_I2C u8g2(U8G2_R0); // EastRising 0.66" OLED breakout board, Uno: A4=SDA, A5=SCL, 5V powered
 long curMillis, prevMillis;
 
-ATM90E36 eic1(D3);
-ATM90E36 eic2(D8);
+// Compile for Wemos Mini, Pro and Lite
+#ifdef ESP8266
+  ATM90E36 eic1(D3);
+  ATM90E36 eic2(D8);
+#endif
+
+// Compile for ESP32 MHET Minikit
+#ifdef ESP32
+  ATM90E36 eic1(17);
+  ATM90E36 eic2(5);
+#endif
 
 void setup() {
   /* Initialize the serial port to host */
