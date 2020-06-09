@@ -5,3 +5,4 @@ of Wifi capable CPU's with eventual feature set enabling.
 - MQTT-TLS data upload to public cloud or self-hosted IoT server.
 - Changing of energy monitor asic calibration parameters in web-interface.
 - Setting wifi details and IoT platform access details in web-interface.
+- Turn relays on and off using MQTT subscribe.
